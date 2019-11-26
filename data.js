@@ -1,20 +1,63 @@
 
-var appPromise = d3.csv(CSC-main-data-set.csv);
+var appPromise = d3.csv("data-set.csv");
 appPromise.then(
 function(data)
         {
         //Put in here functions I need to call
-         
+        makeButtons(data);
+        setButtons();
     
         }) 
 
+var makeButtons = function(data)
+{
+    //filter the data so it's just states that exist
+    console.log("about to start d3 alg")
+    d3.select("#states")
+    .append("button")
+    .data(data)
+    .enter()
+    .append("button")
+    .attr("class", "state-buttons")
+    .text(function(d)
+         {
+        //console.log(d)
+        return d.States;
+        
+    })
+    .on("click", function(d)
+      { console.log(d)
+       //regionTable(d);  
+      })
+    console.log("finished d3 alg")
+    
+    
+}
 
 
+var regionTable = function(regions)
+{
+    d3.selectAll("#mainTable").remove();
+     var rows = d3.select("#mainTable")
+    .selectAll("tr")
+    .data(data.regions)
+    .enter()
+    .append("tr");
+    //how do I just generate a column of data, instead of a row?
+}
 
-
-
-
-
+/*
+var setButtons = function(data)
+{
+  d3.select("#states").on("click",function(d)
+    //having 'd' in function helps us grab onto something if we wanted to         
+    {
+        console.log("i draw the table")
+     //This function is when we want to sort and we want to sort before we draw the new table
+     sortNumberColumn(data, function(country)
+               {
+         return country.eu_amount;
+     })
 //This function draws the table
 var makeTable = function(data)
 {
@@ -62,28 +105,16 @@ var sortColumn = function(data,col,accessor)
     }
 */
 
-var setButtons = function(data)
-{
-  d3.select("#fund").on("click",function(d)
-    //having 'd' in function helps us grab onto something if we wanted to         
-    {
-        console.log("i draw the table")
-     //This function is when we want to sort and we want to sort before we draw the new table
-     sortColumn1(data, function(country)
-               {
-         return country.eu_amount;
-     })
-    
+
+ /*   
      makeTable(data)
       console.log("The table is drawn!")
     });
     
-    d3.select("#basic").on("click",function(d)
-    //having 'd' in function helps us grab onto something if we wanted to         
+    d3.select("#basic").on("click",function(d)         
     {
         console.log("i draw the table")
-     //This function is when we want to sort and we want to sort before we draw the new table
-     sortColumn2(data, function(country)
+     sortStringColumn(data, function(country)
                {
          return country.member_state;
      })
@@ -92,9 +123,21 @@ var setButtons = function(data)
       console.log("The table is drawn!")
     });
     
+     d3.select("#type").on("click",function(d) 
+    {
+        console.log("i draw the table")
+     sortStringColumn(data, function(country)
+               {
+         return country.type;
+     })
+        
+    makeTable(data)
+      console.log("The table is drawn!")
+    });
+    
 }   
 
-var sortColumn1 = function(data,accessor)
+var sortNumberColumn = function(data,accessor)
 {
     data.sort(function(a,b) 
         { 
@@ -103,11 +146,21 @@ var sortColumn1 = function(data,accessor)
    
 }
 
-var sortColumn2 = function(data)
+var sortStringColumn = function(data, accessor)
+//if i give you this funciton, you'll tell me what you want out of it (def of accessor)
 {
-    data.sort(); 
+    data.sort(function(a,b)
+          {
+        if (accessor (a)==accessor (b))
+       { return 0}
+        else if (accessor (a)>accessor(b))
+        {return 1}
+        else 
+            {return -1}
+    }   ); 
 }
-   
+end here
+
 
 /*
 makeTable(data.slice(0,4),"member_state")
