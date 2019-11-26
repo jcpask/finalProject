@@ -1,5 +1,5 @@
 
-var appPromise = d3.json("https://cohesiondata.ec.europa.eu/resource/pi4w-3vc9.json")
+var appPromise = d3.csv(CSC-main-data-set.csv);
 appPromise.then(
 function(data)
         {
